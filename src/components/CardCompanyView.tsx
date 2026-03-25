@@ -9,7 +9,7 @@ import {
   policyBudget, regionData, cardCompanyData, weeklyTrend, blockSummary,
   formatKRW, formatNumber,
 } from "@/lib/mock-data";
-import { BRAND, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
+import { BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
 import DateFilter from "./DateFilter";
 import BlockedRefundSection from "./BlockedRefundSection";
 import RecentBlockLogs from "./RecentBlockLogs";
@@ -43,7 +43,7 @@ export default function CardCompanyView({ company: name }: { company: string }) 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard icon={Wallet} label="배정 예산" value={formatKRW(budget)} delay={0.02} />
         <StatCard icon={FileText} label="신청액" value={formatKRW(applied)} sub={`예산 대비 ${((applied / budget) * 100).toFixed(1)}%`} delay={0.05} />
-        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(spent)} sub={`신청 대비 ${((spent / applied) * 100).toFixed(1)}%`} accent="#16a34a" delay={0.08} />
+        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(spent)} sub={`신청 대비 ${((spent / applied) * 100).toFixed(1)}%`} accent="#1a6b5a" delay={0.08} />
       </div>
 
       <ProgressBar label="신청액 대비 집행률" spent={spent} total={applied} delay={0.10} />
@@ -58,7 +58,7 @@ export default function CardCompanyView({ company: name }: { company: string }) 
               <YAxis type="category" dataKey="name" width={45} tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
               <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} />
-              <Bar dataKey="신청액" fill="#a5b4fc" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="신청액" fill={BRAND_LIGHT} radius={[0, 4, 4, 0]} />
               <Bar dataKey="집행액" fill={BRAND} radius={[0, 4, 4, 0]} />
             </BarChart>
           </ResponsiveContainer>

@@ -39,7 +39,7 @@ export default function BlockedRefundSection({
                 <XAxis dataKey="week" {...AX} />
                 <YAxis tickFormatter={(v) => `${v.toFixed(0)}억`} {...AX} axisLine={false} width={50} />
                 <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(1)}억`} />
-                <Bar dataKey="blockedB" fill="#dc2626" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="blockedB" fill="#9e3328" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -53,7 +53,7 @@ export default function BlockedRefundSection({
                 <XAxis dataKey="week" {...AX} />
                 <YAxis tickFormatter={(v) => `${v.toFixed(0)}억`} {...AX} axisLine={false} width={50} />
                 <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(1)}억`} />
-                <Bar dataKey="refundB" fill="#ea580c" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="refundB" fill="#b06828" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

@@ -10,7 +10,7 @@ import {
   settlementSummary, blockSummary, formatKRW, formatNumber,
 } from "@/lib/mock-data";
 import { renderPieLabel } from "./PieLabel";
-import { PIE_COLORS, BRAND, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
+import { PIE_COLORS, BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
 import DateFilter from "./DateFilter";
 import BlockedRefundSection from "./BlockedRefundSection";
 import RecentBlockLogs from "./RecentBlockLogs";
@@ -39,7 +39,7 @@ export default function PolicyExecution() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard icon={Wallet} label="총 예산" value={formatKRW(policyBudget.totalBudget)} sub={policyBudget.period} delay={0.02} />
         <StatCard icon={FileText} label="신청액" value={formatKRW(policyBudget.appliedAmount)} sub={`총예산 대비 ${((policyBudget.appliedAmount / policyBudget.totalBudget) * 100).toFixed(1)}%`} delay={0.05} />
-        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(policyBudget.totalSpent)} sub={`집행률 ${policyBudget.executionRate}%`} accent="#16a34a" delay={0.08} />
+        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(policyBudget.totalSpent)} sub={`집행률 ${policyBudget.executionRate}%`} accent="#1a6b5a" delay={0.08} />
       </div>
 
       <ProgressBar label="예산 대비 집행률" spent={policyBudget.totalSpent} total={policyBudget.totalBudget} delay={0.10} />
@@ -87,7 +87,7 @@ export default function PolicyExecution() {
                 <YAxis type="category" dataKey="name" width={55} tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
                 <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
                 <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} />
-                <Bar dataKey="신청액" fill="#a5b4fc" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="신청액" fill={BRAND_LIGHT} radius={[0, 4, 4, 0]} />
                 <Bar dataKey="집행액" fill={BRAND} radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -150,24 +150,24 @@ export default function PolicyExecution() {
               <PieChart>
                 <Pie data={[{ name: "SC", value: settlementSummary.scAmount }, { name: "KRW", value: settlementSummary.krwAmount }]}
                   cx="50%" cy="50%" innerRadius={60} outerRadius={95} dataKey="value" label={renderPieLabel} labelLine={false}>
-                  <Cell fill="#16a34a" /><Cell fill="#ea580c" />
+                  <Cell fill="#1a6b5a" /><Cell fill="#b06828" />
                 </Pie>
                 <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
               </PieChart>
             </ResponsiveContainer>
             <div className="flex justify-center gap-5 text-xs">
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-600" />SC (즉시)</span>
-              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-orange-600" />KRW (카드사)</span>
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ background: "#1a6b5a" }} />SC (즉시)</span>
+              <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full" style={{ background: "#b06828" }} />KRW (카드사)</span>
             </div>
           </div>
           <div className="lg:col-span-2 grid grid-cols-2 gap-4 content-center">
-            <div className="rounded-xl bg-green-50 p-5">
-              <div className="flex items-center gap-2 mb-2"><Zap className="w-4 h-4 text-green-600" /><span className="text-xs font-medium text-green-700">SC 정산 (T+0)</span></div>
+            <div className="rounded-xl p-5" style={{ background: "#f0f7f4" }}>
+              <div className="flex items-center gap-2 mb-2"><Zap className="w-4 h-4" style={{ color: "#1a6b5a" }} /><span className="text-xs font-medium" style={{ color: "#1a6b5a" }}>SC 정산 (T+0)</span></div>
               <p className="text-xl font-bold font-mono text-gray-900">{formatKRW(settlementSummary.scAmount)}</p>
               <p className="text-xs mt-1.5 font-mono text-gray-500">{settlementSummary.scRatio}% · {settlementSummary.avgLeadTimeSC}</p>
             </div>
-            <div className="rounded-xl bg-orange-50 p-5">
-              <div className="flex items-center gap-2 mb-2"><Landmark className="w-4 h-4 text-orange-600" /><span className="text-xs font-medium text-orange-700">KRW 정산 (카드사)</span></div>
+            <div className="rounded-xl p-5" style={{ background: "#fdf6ef" }}>
+              <div className="flex items-center gap-2 mb-2"><Landmark className="w-4 h-4" style={{ color: "#b06828" }} /><span className="text-xs font-medium" style={{ color: "#b06828" }}>KRW 정산 (카드사)</span></div>
               <p className="text-xl font-bold font-mono text-gray-900">{formatKRW(settlementSummary.krwAmount)}</p>
               <p className="text-xs mt-1.5 font-mono text-gray-500">{settlementSummary.krwRatio}% · {settlementSummary.avgLeadTimeKRW}</p>
             </div>

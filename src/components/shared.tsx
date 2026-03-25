@@ -1,11 +1,12 @@
 import React from "react";
 
-/* PrimeX Brand Palette */
-export const BRAND = "#6366f1";
+/* Chart Colors - 네이비/틸 기반 */
+export const BRAND = "#2d5f8a";
+export const BRAND_LIGHT = "#a5c4de";
 
 export const PIE_COLORS = [
-  "#6366f1", "#16a34a", "#ea580c", "#8b5cf6", "#0891b2",
-  "#dc2626", "#ca8a04", "#2563eb", "#db2777", "#059669",
+  "#2d5f8a", "#1a6b5a", "#8b6d3f", "#6b4c7a", "#b8602a",
+  "#4a7c7c", "#7a5c3f", "#5a6b8a", "#8a6060", "#5c7a5a",
 ];
 
 /* PrimeX Tooltip: white bg, subtle shadow */
