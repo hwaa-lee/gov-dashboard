@@ -166,14 +166,14 @@ function FilterBar({
       <span className="w-px h-5 mx-1" style={{ background: "var(--border)" }} />
 
       <MapPin className="w-3.5 h-3.5" style={{ color: "#6b4c7a" }} />
-      <select value={selectedRegion} onChange={(e) => { setSelectedRegion(e.target.value); if (e.target.value !== "all") setSelectedCard("all"); }}
+      <select value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}
         className="px-2.5 py-1 rounded-md text-[12px] font-medium cursor-pointer" style={selectStyle}>
         <option value="all">전체 지역</option>
         {regionData.map((r) => <option key={r.region} value={r.region}>{r.region}</option>)}
       </select>
 
       <CreditCard className="w-3.5 h-3.5" style={{ color: "#2d5f8a" }} />
-      <select value={selectedCard} onChange={(e) => { setSelectedCard(e.target.value); if (e.target.value !== "all") setSelectedRegion("all"); }}
+      <select value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)}
         className="px-2.5 py-1 rounded-md text-[12px] font-medium cursor-pointer" style={selectStyle}>
         <option value="all">전체 카드사</option>
         {cardCompanyData.map((c) => <option key={c.company} value={c.company}>{c.company}</option>)}
@@ -191,7 +191,6 @@ function RegionDetail({ name }: { name: string }) {
   const d = getBudget(region.amount);
   const scale = region.amount / policyBudget.totalSpent;
   const weekly = getWeekly(scale);
-  const industries = industryData.map((ind) => ({ name: ind.industry, value: Math.round(ind.amount * scale) }));
   const blockedCount = Math.round(TOTAL_BLOCKED * scale);
   const blockedAmount = Math.round(policyBudget.blockedAmount * scale);
   const refundAmount = Math.round(policyBudget.refundAmount * scale);
@@ -220,14 +219,14 @@ function RegionDetail({ name }: { name: string }) {
         </ResponsiveContainer>
       </Section>
 
-      {/* Industry Pie + Bar */}
+      {/* 카드사별 신청/집행 분포 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Section delay={0.18}>
-          <Title>업종별 분포</Title>
-          <ResponsiveContainer width="100%" height={260}>
+          <Title>카드사별 신청 분포</Title>
+          <ResponsiveContainer width="100%" height={280}>
             <PieChart>
-              <Pie data={industries} cx="50%" cy="50%" outerRadius={95} innerRadius={35} dataKey="value" label={renderPieLabel} labelLine={false}>
-                {industries.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+              <Pie data={cardCompanyData.map(c => ({ name: c.company, value: Math.round(getBudget(Math.round(c.amount * scale)).applied) }))} cx="50%" cy="50%" outerRadius={95} innerRadius={35} dataKey="value" label={renderPieLabel} labelLine={false}>
+                {cardCompanyData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
               </Pie>
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
             </PieChart>
@@ -235,15 +234,14 @@ function RegionDetail({ name }: { name: string }) {
         </Section>
 
         <Section delay={0.20}>
-          <Title>업종별 사용 현황</Title>
-          <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={industries} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
-              <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
-              <YAxis type="category" dataKey="name" width={75} tick={{ fontSize: 11, fill: "#4a5568" }} axisLine={false} tickLine={false} />
+          <Title>카드사별 집행 분포</Title>
+          <ResponsiveContainer width="100%" height={280}>
+            <PieChart>
+              <Pie data={cardCompanyData.map(c => ({ name: c.company, value: Math.round(c.amount * scale) }))} cx="50%" cy="50%" outerRadius={95} innerRadius={35} dataKey="value" label={renderPieLabel} labelLine={false}>
+                {cardCompanyData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+              </Pie>
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
-              <Bar dataKey="value" fill="#6b4c7a" radius={[0, 4, 4, 0]} />
-            </BarChart>
+            </PieChart>
           </ResponsiveContainer>
         </Section>
       </div>
@@ -349,14 +347,14 @@ function CardCompanyDetail({ name }: { name: string }) {
         </ResponsiveContainer>
       </Section>
 
-      {/* Region Pie + Bar */}
+      {/* 지역별 신청/집행 현황 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Section delay={0.18}>
-          <Title>지역별 분포</Title>
+          <Title>지역별 신청 현황</Title>
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
-              <Pie data={regions} cx="50%" cy="50%" outerRadius={95} innerRadius={35} dataKey="value" label={renderPieLabel} labelLine={false}>
-                {regions.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+              <Pie data={regionData.map(r => ({ name: r.region, value: Math.round(getBudget(Math.round(r.amount * scale)).applied) }))} cx="50%" cy="50%" outerRadius={95} innerRadius={35} dataKey="value" label={renderPieLabel} labelLine={false}>
+                {regionData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
               </Pie>
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
             </PieChart>
@@ -366,13 +364,12 @@ function CardCompanyDetail({ name }: { name: string }) {
         <Section delay={0.20}>
           <Title>지역별 집행 현황</Title>
           <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={regions} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
-              <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
-              <YAxis type="category" dataKey="name" width={45} tick={{ fontSize: 11, fill: "#4a5568" }} axisLine={false} tickLine={false} />
+            <PieChart>
+              <Pie data={regions} cx="50%" cy="50%" outerRadius={95} innerRadius={35} dataKey="value" label={renderPieLabel} labelLine={false}>
+                {regions.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+              </Pie>
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
-              <Bar dataKey="value" fill="#2d5f8a" radius={[0, 4, 4, 0]} />
-            </BarChart>
+            </PieChart>
           </ResponsiveContainer>
         </Section>
       </div>
