@@ -1,6 +1,6 @@
 "use client";
 
-import { Wallet, TrendingUp, ShoppingBag, FileText, Zap, Landmark } from "lucide-react";
+import { Wallet, TrendingUp, ShoppingBag, FileText, Zap, Landmark, BarChart3 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, AreaChart, Area, Legend,
@@ -10,7 +10,7 @@ import {
   settlementSummary, blockSummary, formatKRW, formatNumber,
 } from "@/lib/mock-data";
 import { renderPieLabel } from "./PieLabel";
-import { PIE_COLORS, BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
+import { PIE_COLORS, BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, DataTable, TR, TD } from "./shared";
 import BlockedRefundSection from "./BlockedRefundSection";
 import RecentBlockLogs from "./RecentBlockLogs";
 
@@ -32,18 +32,17 @@ export default function PolicyExecution() {
 
   return (
     <div className="space-y-6">
-      {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Stats - 4 col grid like TailPanel */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Wallet} label="총 예산" value={formatKRW(policyBudget.totalBudget)} sub={policyBudget.period} accent="#2d5f8a" delay={0.02} />
         <StatCard icon={FileText} label="신청액" value={formatKRW(policyBudget.appliedAmount)} sub={`총예산 대비 ${((policyBudget.appliedAmount / policyBudget.totalBudget) * 100).toFixed(1)}%`} accent="#6b4c7a" delay={0.04} />
         <StatCard icon={TrendingUp} label="집행액" value={formatKRW(policyBudget.totalSpent)} sub={`집행률 ${policyBudget.executionRate}%`} accent="#1a6b5a" delay={0.06} />
+        <StatCard icon={BarChart3} label="집행률" value={`${policyBudget.executionRate}%`} sub={`${formatKRW(policyBudget.totalSpent)} / ${formatKRW(policyBudget.totalBudget)}`} accent="#8b6d3f" delay={0.08} />
       </div>
-
-      <ProgressBar label="신청액 대비 집행률" spent={policyBudget.totalSpent} total={policyBudget.appliedAmount} delay={0.08} />
 
       {/* Distribution */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <Section delay={0.10}>
+        <Section delay={0.12}>
           <Title>지역별 집행 분포</Title>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
@@ -57,7 +56,7 @@ export default function PolicyExecution() {
           </div>
         </Section>
 
-        <Section delay={0.12}>
+        <Section delay={0.14}>
           <Title>카드사별 집행 분포</Title>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
@@ -72,10 +71,10 @@ export default function PolicyExecution() {
         </Section>
       </div>
 
-      {/* 카드사별 현황 + 상세 (하나의 카드, 2열) */}
-      <Section delay={0.14}>
-        <Title>카드사별 신청·집행 현황</Title>
-        <div className="grid gap-6 lg:grid-cols-2">
+      {/* Cross Analysis */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Section delay={0.16}>
+          <Title>카드사별 신청·집행</Title>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={cardGrouped}>
@@ -89,37 +88,26 @@ export default function PolicyExecution() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          <DataTable headers={["카드사", "신청액", "집행액", "건수"]}>
-            {cardCompanyData.map((c) => (
-              <TR key={c.company}>
-                <TD>{c.company}</TD>
-                <TD right mono>{formatKRW(Math.round(c.amount * 1.19))}</TD>
-                <TD right mono>{formatKRW(c.amount)}</TD>
-                <TD right mono>{formatNumber(c.txCount)}</TD>
-              </TR>
-            ))}
-          </DataTable>
-        </div>
-      </Section>
+        </Section>
 
-      {/* 업종별 */}
-      <Section delay={0.16}>
-        <Title>업종별 사용 현황 (상위)</Title>
-        <div className="h-72">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={industryData.slice(0, 10)}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis dataKey="industry" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
-              <YAxis tickFormatter={(v) => formatKRW(v)} {...AX} axisLine={false} width={65} />
-              <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
-              <Bar dataKey="amount" name="집행액" fill={BRAND} radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </Section>
+        <Section delay={0.18}>
+          <Title>업종별 사용 현황 (상위)</Title>
+          <div className="h-72">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={industryData.slice(0, 10)}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="industry" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={(v) => formatKRW(v)} {...AX} axisLine={false} width={65} />
+                <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
+                <Bar dataKey="amount" name="집행액" fill={BRAND} radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Section>
+      </div>
 
-      {/* Trend */}
-      <Section delay={0.18}>
+      {/* Trend - PrimeX gradient area */}
+      <Section delay={0.20}>
         <Title>집행 금액 추이</Title>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
@@ -146,11 +134,11 @@ export default function PolicyExecution() {
         blockedAmount={policyBudget.blockedAmount}
         refundAmount={policyBudget.refundAmount}
         weeklyData={trend}
-        delay={0.20}
+        delay={0.22}
       />
 
-      {/* SC/KRW */}
-      <Section delay={0.22}>
+      {/* Settlement SC/KRW */}
+      <Section delay={0.24}>
         <Title>정산 현황 SC / KRW</Title>
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="h-64">
@@ -183,22 +171,38 @@ export default function PolicyExecution() {
         </div>
       </Section>
 
-      {/* 지역별 상세 */}
-      <Section delay={0.24}>
-        <Title>지역별 상세</Title>
-        <DataTable headers={["지역", "집행액", "비중", "건수"]}>
-          {regionData.map((r) => (
-            <TR key={r.region}>
-              <TD>{r.region}</TD>
-              <TD right mono>{formatKRW(r.amount)}</TD>
-              <TD right mono muted>{r.ratio}%</TD>
-              <TD right mono>{formatNumber(r.txCount)}</TD>
-            </TR>
-          ))}
-        </DataTable>
-      </Section>
+      {/* Tables */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Section delay={0.26}>
+          <Title>지역별 상세</Title>
+          <DataTable headers={["지역", "집행액", "비중", "건수"]}>
+            {regionData.map((r) => (
+              <TR key={r.region}>
+                <TD>{r.region}</TD>
+                <TD right mono>{formatKRW(r.amount)}</TD>
+                <TD right mono muted>{r.ratio}%</TD>
+                <TD right mono>{formatNumber(r.txCount)}</TD>
+              </TR>
+            ))}
+          </DataTable>
+        </Section>
 
-      <RecentBlockLogs delay={0.26} />
+        <Section delay={0.28}>
+          <Title>카드사별 상세</Title>
+          <DataTable headers={["카드사", "신청액", "집행액", "건수"]}>
+            {cardCompanyData.map((c) => (
+              <TR key={c.company}>
+                <TD>{c.company}</TD>
+                <TD right mono>{formatKRW(Math.round(c.amount * 1.19))}</TD>
+                <TD right mono>{formatKRW(c.amount)}</TD>
+                <TD right mono>{formatNumber(c.txCount)}</TD>
+              </TR>
+            ))}
+          </DataTable>
+        </Section>
+      </div>
+
+      <RecentBlockLogs delay={0.30} />
     </div>
   );
 }
