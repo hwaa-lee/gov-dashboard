@@ -9,7 +9,7 @@ import {
   policyBudget, regionData, cardCompanyData, weeklyTrend, blockSummary,
   formatKRW, formatNumber,
 } from "@/lib/mock-data";
-import { StatCard, Section, Title, ProgressBar, DataTable, TT, AX } from "./shared";
+import { BRAND, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
 import DateFilter from "./DateFilter";
 import BlockedRefundSection from "./BlockedRefundSection";
 import RecentBlockLogs from "./RecentBlockLogs";
@@ -36,75 +36,81 @@ export default function CardCompanyView({ company: name }: { company: string }) 
     집행액: Math.round(r.amount * scale),
   }));
 
-  const blockedCount = Math.round(TOTAL_BLOCKED * scale);
-  const blockedAmount = Math.round(policyBudget.blockedAmount * scale);
-  const refundAmount = Math.round(policyBudget.refundAmount * scale);
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <DateFilter />
 
-      {/* ① 핵심 수치 */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatCard icon={Wallet} label="배정 예산" value={formatKRW(budget)} accent="#2d5f8a" delay={0.02} />
-        <StatCard icon={FileText} label="신청액" value={formatKRW(applied)} sub={`예산 대비 ${((applied / budget) * 100).toFixed(1)}%`} accent="#6b4c7a" delay={0.06} />
-        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(spent)} sub={`신청 대비 ${((spent / applied) * 100).toFixed(1)}%`} accent="#1a6b5a" delay={0.10} />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <StatCard icon={Wallet} label="배정 예산" value={formatKRW(budget)} delay={0.02} />
+        <StatCard icon={FileText} label="신청액" value={formatKRW(applied)} sub={`예산 대비 ${((applied / budget) * 100).toFixed(1)}%`} delay={0.05} />
+        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(spent)} sub={`신청 대비 ${((spent / applied) * 100).toFixed(1)}%`} accent="#16a34a" delay={0.08} />
       </div>
-      <ProgressBar label="신청액 대비 집행률" spent={spent} total={applied} delay={0.12} />
 
-      {/* ② 교차 분석: 지역별 신청·집행 */}
-      <Section delay={0.14}>
+      <ProgressBar label="신청액 대비 집행률" spent={spent} total={applied} delay={0.10} />
+
+      <Section delay={0.12}>
         <Title>지역별 신청·집행 현황</Title>
-        <ResponsiveContainer width="100%" height={240}>
-          <BarChart data={regionGrouped} layout="vertical">
-            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
-            <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
-            <YAxis type="category" dataKey="name" width={45} tick={{ fontSize: 11, fill: "#4a5568" }} axisLine={false} tickLine={false} />
-            <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
-            <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "8px" }} />
-            <Bar dataKey="신청액" fill="#6b4c7a" radius={[0, 4, 4, 0]} />
-            <Bar dataKey="집행액" fill="#1a6b5a" radius={[0, 4, 4, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="h-72">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={regionGrouped} layout="vertical">
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
+              <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
+              <YAxis type="category" dataKey="name" width={45} tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+              <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
+              <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} />
+              <Bar dataKey="신청액" fill="#a5b4fc" radius={[0, 4, 4, 0]} />
+              <Bar dataKey="집행액" fill={BRAND} radius={[0, 4, 4, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </Section>
 
-      {/* ③ 추이 */}
-      <Section delay={0.16}>
+      <Section delay={0.14}>
         <Title>주간 집행 추이</Title>
-        <ResponsiveContainer width="100%" height={180}>
-          <AreaChart data={weekly}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-            <XAxis dataKey="week" {...AX} />
-            <YAxis tickFormatter={(v) => `${v.toFixed(0)}억`} {...AX} axisLine={false} />
-            <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(1)}억`} />
-            <Area type="monotone" dataKey="spentB" name="집행" stroke="#1a6b5a" fill="#1a6b5a" fillOpacity={0.08} strokeWidth={2} dot={{ r: 3, fill: "#1a6b5a", strokeWidth: 0 }} />
-          </AreaChart>
-        </ResponsiveContainer>
+        <div className="h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={weekly}>
+              <defs>
+                <linearGradient id="gradCard" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={BRAND} stopOpacity={0.1} />
+                  <stop offset="95%" stopColor={BRAND} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <XAxis dataKey="week" {...AX} />
+              <YAxis tickFormatter={(v) => `${v.toFixed(0)}억`} {...AX} axisLine={false} width={65} />
+              <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(1)}억`} />
+              <Area type="monotone" dataKey="spentB" name="집행" stroke={BRAND} strokeWidth={2} fill="url(#gradCard)" dot={false} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </Section>
 
-      {/* ④ 차단·환불 */}
-      <BlockedRefundSection blockedCount={blockedCount} blockedAmount={blockedAmount} refundAmount={refundAmount} weeklyData={weekly} delay={0.18} />
+      <BlockedRefundSection
+        blockedCount={Math.round(TOTAL_BLOCKED * scale)}
+        blockedAmount={Math.round(policyBudget.blockedAmount * scale)}
+        refundAmount={Math.round(policyBudget.refundAmount * scale)}
+        weeklyData={weekly} delay={0.16}
+      />
 
-      {/* ⑤ 상세 테이블 */}
-      <Section delay={0.20}>
+      <Section delay={0.18}>
         <Title>지역별 상세</Title>
         <DataTable headers={["지역", "신청액", "집행액", "거래 건수"]}>
           {regionData.map((r) => {
             const rSpent = Math.round(r.amount * scale);
             return (
-              <tr key={r.region} className="table-row table-row-hover">
-                <td className="font-medium">{r.region}</td>
-                <td className="text-right font-mono text-xs">{formatKRW(Math.round(rSpent * 1.19))}</td>
-                <td className="text-right font-mono text-xs">{formatKRW(rSpent)}</td>
-                <td className="text-right font-mono text-xs">{formatNumber(Math.round(r.txCount * scale))}</td>
-              </tr>
+              <TR key={r.region}>
+                <TD>{r.region}</TD>
+                <TD right mono>{formatKRW(Math.round(rSpent * 1.19))}</TD>
+                <TD right mono>{formatKRW(rSpent)}</TD>
+                <TD right mono>{formatNumber(Math.round(r.txCount * scale))}</TD>
+              </TR>
             );
           })}
         </DataTable>
       </Section>
 
-      {/* ⑥ 최근 차단 로그 */}
-      <RecentBlockLogs filterCard={name} delay={0.22} />
+      <RecentBlockLogs filterCard={name} delay={0.20} />
     </div>
   );
 }
