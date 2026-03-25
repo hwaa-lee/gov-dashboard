@@ -11,7 +11,6 @@ import {
 } from "@/lib/mock-data";
 import { renderPieLabel } from "./PieLabel";
 import { PIE_COLORS, BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, DataTable, TR, TD } from "./shared";
-import DateFilter from "./DateFilter";
 import BlockedRefundSection from "./BlockedRefundSection";
 import RecentBlockLogs from "./RecentBlockLogs";
 
@@ -33,8 +32,6 @@ export default function PolicyExecution() {
 
   return (
     <div className="space-y-6">
-      <DateFilter />
-
       {/* Stats - 4 col grid like TailPanel */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Wallet} label="총 예산" value={formatKRW(policyBudget.totalBudget)} sub={policyBudget.period} accent="#2d5f8a" delay={0.02} />

@@ -10,7 +10,6 @@ import {
   formatKRW, formatNumber,
 } from "@/lib/mock-data";
 import { BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
-import DateFilter from "./DateFilter";
 import BlockedRefundSection from "./BlockedRefundSection";
 import RecentBlockLogs from "./RecentBlockLogs";
 
@@ -38,8 +37,6 @@ export default function CardCompanyView({ company: name }: { company: string }) 
 
   return (
     <div className="space-y-6">
-      <DateFilter />
-
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <StatCard icon={Wallet} label="배정 예산" value={formatKRW(budget)} delay={0.02} />
         <StatCard icon={FileText} label="신청액" value={formatKRW(applied)} sub={`예산 대비 ${((applied / budget) * 100).toFixed(1)}%`} delay={0.05} />

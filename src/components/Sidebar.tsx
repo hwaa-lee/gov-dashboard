@@ -11,9 +11,11 @@ type View = { type: "overview" } | { type: "region"; name: string } | { type: "c
 export default function Sidebar({
   current,
   onNavigate,
+  collapsed,
 }: {
   current: View;
   onNavigate: (view: View) => void;
+  collapsed: boolean;
 }) {
   const [regionOpen, setRegionOpen] = useState(current.type === "region");
   const [cardOpen, setCardOpen] = useState(current.type === "card");
@@ -29,7 +31,7 @@ export default function Sidebar({
   const navInactive = "text-gray-600 hover:bg-gray-50 hover:text-gray-900";
 
   return (
-    <aside className="hidden lg:flex w-64 h-screen flex-col border-r border-gray-200 bg-white shrink-0 sticky top-0">
+    <aside className={`flex h-screen flex-col border-r border-gray-200 bg-white shrink-0 sticky top-0 transition-all duration-200 ${collapsed ? "w-0 overflow-hidden border-0" : "w-64"}`}>
       {/* Logo */}
       <div className="flex h-16 items-center gap-2.5 border-b border-gray-200 px-6">
         <div className="h-8 w-8 rounded-lg flex items-center justify-center" style={{ background: "#1b2844" }}>

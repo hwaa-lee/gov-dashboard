@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Bell, User } from "lucide-react";
+import { Menu, CalendarRange, Bell, User } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import PolicyExecution from "@/components/PolicyExecution";
 import RegionView from "@/components/RegionView";
@@ -23,37 +23,54 @@ function viewSub(v: View) {
 
 export default function DashboardPage() {
   const [view, setView] = useState<View>({ type: "overview" });
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [dateFrom, setDateFrom] = useState("2026-04-01");
+  const [dateTo, setDateTo] = useState("2026-06-30");
+
+  const inputStyle = "h-8 rounded-lg border border-gray-200 bg-gray-50 px-2.5 text-xs font-mono text-gray-700 focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-100";
 
   return (
     <div className="flex h-screen">
-      <Sidebar current={view} onNavigate={setView} />
+      <Sidebar current={view} onNavigate={setView} collapsed={!sidebarOpen} />
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}
-        <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6 shrink-0">
-          <div>
-            <h1 className="text-lg font-bold text-gray-900">{viewTitle(view)}</h1>
-            <p className="text-xs text-gray-500">{viewSub(view)}</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input
-                placeholder="검색..."
-                className="h-9 w-56 rounded-lg border border-gray-200 bg-gray-50 pl-9 pr-4 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              />
-            </div>
-            <button className="relative rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
+        <header className="flex h-14 items-center justify-between border-b border-gray-200 bg-white px-4 shrink-0 gap-4">
+          {/* Left: toggle + title */}
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100 cursor-pointer shrink-0"
+            >
+              <Menu className="h-5 w-5" />
             </button>
-            <div className="flex items-center gap-2.5">
-              <div className="h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center">
-                <User className="h-5 w-5 text-blue-700" />
+            <div className="min-w-0">
+              <h1 className="text-sm font-bold text-gray-900 truncate">{viewTitle(view)}</h1>
+              <p className="text-[11px] text-gray-400 truncate">{viewSub(view)}</p>
+            </div>
+          </div>
+
+          {/* Center: date filter */}
+          <div className="flex items-center gap-2 shrink-0">
+            <CalendarRange className="h-4 w-4 text-gray-400" />
+            <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className={inputStyle} />
+            <span className="text-gray-300 text-xs">~</span>
+            <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className={inputStyle} />
+          </div>
+
+          {/* Right: actions */}
+          <div className="flex items-center gap-2 shrink-0">
+            <button className="relative rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-gray-100">
+              <Bell className="h-5 w-5" />
+              <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
+                <User className="h-4 w-4 text-blue-700" />
               </div>
               <div className="hidden md:block">
-                <p className="text-sm font-medium text-gray-900">관리자</p>
-                <p className="text-xs text-gray-500">여신금융협회</p>
+                <p className="text-xs font-medium text-gray-900">관리자</p>
+                <p className="text-[10px] text-gray-400">여신금융협회</p>
               </div>
             </div>
           </div>
