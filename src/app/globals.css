@@ -1,22 +1,53 @@
 @import "tailwindcss";
 
 :root {
+  /* Brand */
   --navy: #1b2844;
   --navy-light: #243352;
+  --navy-hover: #2a3d62;
   --gold: #c8a84e;
   --gold-soft: #d4b969;
+
+  /* Semantic */
   --teal: #1a6b5a;
   --teal-light: #248a72;
-  --warm-bg: #f5f3ef;
-  --border: #ddd9d0;
-  --border-light: #eae7e0;
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --red: #9e3328;
+  --orange: #b06828;
+  --purple: #6b4c7a;
+  --blue: #2d5f8a;
+
+  /* Surface */
+  --bg: #f6f5f2;
+  --bg-warm: #faf9f7;
+  --surface: #ffffff;
+  --surface-hover: #f8f7f4;
+  --surface-active: #f2f0ec;
+
+  /* Border */
+  --border: #e8e5df;
+  --border-light: #f0ede8;
+  --border-strong: #d4d0c8;
+
+  /* Text */
+  --text-primary: #1a1d24;
+  --text-secondary: #4a5568;
+  --text-muted: #8a919e;
+  --text-faint: #b4b9c4;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(27,40,68,0.04), 0 0 0 1px rgba(27,40,68,0.03);
+  --shadow-md: 0 2px 8px rgba(27,40,68,0.06), 0 0 0 1px rgba(27,40,68,0.03);
+  --shadow-lg: 0 4px 16px rgba(27,40,68,0.08), 0 0 0 1px rgba(27,40,68,0.04);
+  --shadow-xl: 0 8px 32px rgba(27,40,68,0.10), 0 0 0 1px rgba(27,40,68,0.04);
+
+  /* Radius */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 14px;
 }
 
 @theme inline {
-  --color-background: var(--warm-bg);
+  --color-background: var(--bg);
   --color-foreground: var(--text-primary);
   --font-sans: var(--font-sans-kr), system-ui, sans-serif;
   --font-serif: var(--font-serif-kr), serif;
@@ -25,30 +56,111 @@
 
 body {
   font-family: var(--font-sans-kr), system-ui, sans-serif;
-  background: var(--warm-bg);
+  background: var(--bg);
   color: var(--text-primary);
   font-feature-settings: "tnum";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ─── Cards ─── */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
-/* Recharts overrides */
+.card-interactive {
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.card-interactive:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.card-interactive:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ─── Animations ─── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-in {
+  opacity: 0;
+  animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stagger-1 { animation-delay: 0.02s; }
+.stagger-2 { animation-delay: 0.06s; }
+.stagger-3 { animation-delay: 0.10s; }
+.stagger-4 { animation-delay: 0.14s; }
+.stagger-5 { animation-delay: 0.18s; }
+.stagger-6 { animation-delay: 0.22s; }
+.stagger-7 { animation-delay: 0.26s; }
+.stagger-8 { animation-delay: 0.30s; }
+
+/* ─── Table ─── */
+.table-header th {
+  padding: 10px 16px 10px 0;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+.table-header th:last-child { padding-right: 0; }
+
+.table-row td {
+  padding: 10px 16px 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13px;
+}
+.table-row td:last-child { padding-right: 0; }
+.table-row:last-child td { border-bottom: none; }
+
+.table-row-hover { transition: background 0.15s; }
+.table-row-hover:hover { background: var(--surface-hover) !important; }
+
+/* ─── Recharts ─── */
 .recharts-default-tooltip {
   background: var(--navy) !important;
   border: none !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-xl) !important;
 }
+
+/* ─── Focus ─── */
+input:focus-visible, button:focus-visible, select:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ─── Chip/Pill ─── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+}
+.chip:hover { filter: brightness(0.96); }
