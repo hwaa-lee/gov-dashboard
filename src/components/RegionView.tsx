@@ -57,7 +57,7 @@ export default function RegionView({ region: name }: { region: string }) {
         <Title>카드사별 신청·집행 현황</Title>
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={cardGrouped} layout="vertical">
-            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
             <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
             <YAxis type="category" dataKey="name" width={55} tick={{ fontSize: 11, fill: "#4a5568" }} axisLine={false} tickLine={false} />
             <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
@@ -73,7 +73,7 @@ export default function RegionView({ region: name }: { region: string }) {
         <Title>주간 집행 추이</Title>
         <ResponsiveContainer width="100%" height={180}>
           <AreaChart data={weekly}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0ede8" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
             <XAxis dataKey="week" {...AX} />
             <YAxis tickFormatter={(v) => `${v.toFixed(0)}억`} {...AX} axisLine={false} />
             <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(1)}억`} />

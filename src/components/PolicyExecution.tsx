@@ -78,7 +78,7 @@ export default function PolicyExecution() {
           <Title>카드사별 신청·집행</Title>
           <ResponsiveContainer width="100%" height={160}>
             <BarChart data={cardGrouped} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
               <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
               <YAxis type="category" dataKey="name" width={55} tick={{ fontSize: 11, fill: "#4a5568" }} axisLine={false} tickLine={false} />
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
@@ -92,7 +92,7 @@ export default function PolicyExecution() {
           <Title>업종별 사용 현황</Title>
           <ResponsiveContainer width="100%" height={160}>
             <BarChart data={industryData} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
+              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
               <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
               <YAxis type="category" dataKey="industry" width={80} tick={{ fontSize: 11, fill: "#4a5568" }} axisLine={false} tickLine={false} />
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
@@ -107,7 +107,7 @@ export default function PolicyExecution() {
         <Title>집행 금액 추이</Title>
         <ResponsiveContainer width="100%" height={160}>
           <AreaChart data={trend}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0ede8" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
             <XAxis dataKey="week" {...AX} />
             <YAxis tickFormatter={(v) => `${v}억`} {...AX} axisLine={false} />
             <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(0)}억`} />
@@ -150,13 +150,13 @@ export default function PolicyExecution() {
             <div className="lg:col-span-2 grid grid-cols-2 gap-4 content-center">
               <div className="rounded-xl p-5" style={{ background: "#f0f7f4" }}>
                 <div className="flex items-center gap-2 mb-2"><Zap className="w-4 h-4" style={{ color: SC }} /><span className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: SC }}>SC (T+0)</span></div>
-                <p className="text-xl font-bold font-mono" style={{ color: "#1a1d24" }}>{formatKRW(settlementSummary.scAmount)}</p>
-                <p className="text-[11px] mt-1.5 font-mono" style={{ color: "#8a919e" }}>{settlementSummary.scRatio}% · {settlementSummary.avgLeadTimeSC}</p>
+                <p className="text-xl font-bold font-mono" style={{ color: "#111827" }}>{formatKRW(settlementSummary.scAmount)}</p>
+                <p className="text-[11px] mt-1.5 font-mono" style={{ color: "#9ca3af" }}>{settlementSummary.scRatio}% · {settlementSummary.avgLeadTimeSC}</p>
               </div>
               <div className="rounded-xl p-5" style={{ background: "#fdf6ef" }}>
                 <div className="flex items-center gap-2 mb-2"><Landmark className="w-4 h-4" style={{ color: KRW }} /><span className="text-[11px] font-semibold uppercase tracking-wide" style={{ color: KRW }}>KRW (카드사)</span></div>
-                <p className="text-xl font-bold font-mono" style={{ color: "#1a1d24" }}>{formatKRW(settlementSummary.krwAmount)}</p>
-                <p className="text-[11px] mt-1.5 font-mono" style={{ color: "#8a919e" }}>{settlementSummary.krwRatio}% · {settlementSummary.avgLeadTimeKRW}</p>
+                <p className="text-xl font-bold font-mono" style={{ color: "#111827" }}>{formatKRW(settlementSummary.krwAmount)}</p>
+                <p className="text-[11px] mt-1.5 font-mono" style={{ color: "#9ca3af" }}>{settlementSummary.krwRatio}% · {settlementSummary.avgLeadTimeKRW}</p>
               </div>
             </div>
           </div>
@@ -172,7 +172,7 @@ export default function PolicyExecution() {
               <tr key={r.region} className="table-row table-row-hover">
                 <td className="font-medium">{r.region}</td>
                 <td className="text-right font-mono text-xs">{formatKRW(r.amount)}</td>
-                <td className="text-right font-mono text-xs" style={{ color: "#8a919e" }}>{r.ratio}%</td>
+                <td className="text-right font-mono text-xs" style={{ color: "#9ca3af" }}>{r.ratio}%</td>
                 <td className="text-right font-mono text-xs">{formatNumber(r.txCount)}</td>
               </tr>
             ))}

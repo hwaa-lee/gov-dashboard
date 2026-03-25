@@ -35,7 +35,7 @@ export default function BlockedRefundSection({
           </p>
           <ResponsiveContainer width="100%" height={120}>
             <BarChart data={weeklyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0ede8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
               <XAxis dataKey="week" {...AX} />
               <YAxis tickFormatter={(v) => `${v.toFixed(0)}억`} {...AX} axisLine={false} />
               <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(1)}억`} />
@@ -49,7 +49,7 @@ export default function BlockedRefundSection({
           </p>
           <ResponsiveContainer width="100%" height={120}>
             <BarChart data={weeklyData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0ede8" />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
               <XAxis dataKey="week" {...AX} />
               <YAxis tickFormatter={(v) => `${v.toFixed(0)}억`} {...AX} axisLine={false} />
               <Tooltip {...TT} formatter={(v) => `${Number(v).toFixed(1)}억`} />
