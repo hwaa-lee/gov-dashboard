@@ -1,65 +1,141 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import {
+  BarChart3,
+  ShieldAlert,
+  FileSearch,
+  ArrowLeftRight,
+  Shield,
+} from "lucide-react";
+import PolicyExecution from "@/components/PolicyExecution";
+import BlockLogView from "@/components/BlockLogView";
+import AuditView from "@/components/AuditView";
+import SettlementView from "@/components/SettlementView";
+
+const tabs = [
+  { id: "execution", label: "정책 집행 현황", icon: BarChart3 },
+  { id: "blocklog", label: "차단 로그", icon: ShieldAlert },
+  { id: "audit", label: "감사 뷰", icon: FileSearch },
+  { id: "settlement", label: "정산선택 분포", icon: ArrowLeftRight },
+] as const;
+
+type TabId = (typeof tabs)[number]["id"];
+
+export default function DashboardPage() {
+  const [activeTab, setActiveTab] = useState<TabId>("execution");
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen flex flex-col">
+      {/* Gold accent line */}
+      <div
+        className="h-[3px] shrink-0"
+        style={{
+          background:
+            "linear-gradient(90deg, #c8a84e, #d4b969 40%, #c8a84e 80%, #a08838)",
+        }}
+      />
+
+      {/* Header */}
+      <header style={{ background: "#1b2844" }}>
+        <div className="max-w-[1400px] mx-auto px-6 py-5 flex items-center gap-4">
+          <div
+            className="flex items-center justify-center w-10 h-10 rounded-lg shrink-0"
+            style={{
+              background: "rgba(200,168,78,0.12)",
+              border: "1px solid rgba(200,168,78,0.25)",
+            }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <Shield className="w-5 h-5" style={{ color: "#c8a84e" }} />
+          </div>
+          <div>
+            <h1 className="text-lg font-bold tracking-tight text-white">
+              지자체 정책 대시보드
+            </h1>
+            <p
+              className="text-xs mt-0.5"
+              style={{ color: "rgba(255,255,255,0.45)" }}
+            >
+              스테이블코인 기반 결제·정산 PoC — 정책쿠폰·지역화폐 모니터링
+            </p>
+          </div>
+          <div
+            className="ml-auto flex items-center gap-3 text-xs shrink-0"
+            style={{ color: "rgba(255,255,255,0.55)" }}
           >
-            Documentation
-          </a>
+            <span className="flex items-center gap-1.5">
+              <span
+                className="inline-block w-1.5 h-1.5 rounded-full"
+                style={{
+                  background: "#4ade80",
+                  boxShadow: "0 0 6px rgba(74,222,128,0.5)",
+                }}
+              />
+              실시간
+            </span>
+            <span style={{ color: "rgba(255,255,255,0.15)" }}>|</span>
+            <span className="font-mono">2026-05-15 17:30 KST</span>
+          </div>
         </div>
+
+        {/* Tab Navigation */}
+        <nav
+          className="border-t"
+          style={{ borderColor: "rgba(255,255,255,0.07)" }}
+        >
+          <div className="max-w-[1400px] mx-auto px-6">
+            <div className="flex">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-5 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
+                      isActive
+                        ? "text-white"
+                        : "text-white/40 hover:text-white/65"
+                    }`}
+                    style={{
+                      borderBottomColor: isActive ? "#c8a84e" : "transparent",
+                      background: isActive
+                        ? "rgba(255,255,255,0.04)"
+                        : "transparent",
+                    }}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      {/* Content */}
+      <main className="max-w-[1400px] mx-auto px-6 py-6 flex-1 w-full">
+        {activeTab === "execution" && <PolicyExecution />}
+        {activeTab === "blocklog" && <BlockLogView />}
+        {activeTab === "audit" && <AuditView />}
+        {activeTab === "settlement" && <SettlementView />}
       </main>
+
+      {/* Footer */}
+      <footer style={{ background: "#1b2844" }}>
+        <div
+          className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between text-xs"
+          style={{ color: "rgba(255,255,255,0.35)" }}
+        >
+          <span>
+            여신금융협회 스테이블코인 PoC — 정책쿠폰·지역화폐 대시보드 (Mock)
+          </span>
+          <span className="font-mono">
+            Model 3: 정책 룰 기반 자동 집행·정산·감사 | Ethereum L2
+          </span>
+        </div>
+      </footer>
     </div>
   );
 }
