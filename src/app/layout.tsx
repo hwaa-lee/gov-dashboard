@@ -25,7 +25,7 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "지자체 정책 대시보드 | 스테이블코인 PoC",
-  description: "정책쿠폰/지역화폐 집행·정산·감사 통합 대시보드",
+  description: "정책쿠폰/지역화폐 집행·정산 모니터링 대시보드",
 };
 
 export default function RootLayout({

@@ -1,23 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import {
-  BarChart3,
-  ShieldAlert,
-  FileSearch,
-  ArrowLeftRight,
-  Shield,
-} from "lucide-react";
+import { BarChart3, ShieldAlert, Shield } from "lucide-react";
 import PolicyExecution from "@/components/PolicyExecution";
 import BlockLogView from "@/components/BlockLogView";
-import AuditView from "@/components/AuditView";
-import SettlementView from "@/components/SettlementView";
 
 const tabs = [
-  { id: "execution", label: "정책 집행 현황", icon: BarChart3 },
+  { id: "execution", label: "대시보드", icon: BarChart3 },
   { id: "blocklog", label: "차단 로그", icon: ShieldAlert },
-  { id: "audit", label: "감사 뷰", icon: FileSearch },
-  { id: "settlement", label: "정산선택 분포", icon: ArrowLeftRight },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
@@ -118,8 +108,6 @@ export default function DashboardPage() {
       <main className="max-w-[1400px] mx-auto px-6 py-6 flex-1 w-full">
         {activeTab === "execution" && <PolicyExecution />}
         {activeTab === "blocklog" && <BlockLogView />}
-        {activeTab === "audit" && <AuditView />}
-        {activeTab === "settlement" && <SettlementView />}
       </main>
 
       {/* Footer */}

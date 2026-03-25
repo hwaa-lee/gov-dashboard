@@ -7,7 +7,6 @@ import {
   MapPin,
   ShoppingBag,
   Clock,
-  Ban,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
@@ -22,6 +21,7 @@ import { renderPieLabel } from "./PieLabel";
 import {
   blockLogs,
   blockSummary,
+  blockByCardCompany,
   formatKRW,
   type BlockLog,
 } from "@/lib/mock-data";
@@ -29,44 +29,26 @@ import {
 const TYPE_COLORS: Record<string, string> = {
   region: "#9e3328",
   industry: "#b06828",
-  limit: "#8a7030",
   period: "#6b4c7a",
 };
 
 const TYPE_BG: Record<string, string> = {
   region: "#faf0ee",
   industry: "#faf3ec",
-  limit: "#f8f4ea",
   period: "#f4f0f6",
 };
 
 const TYPE_LABELS: Record<string, string> = {
   region: "지역 위반",
   industry: "업종 위반",
-  limit: "한도 초과",
   period: "기간 위반",
 };
 
 const TYPE_ICONS: Record<string, React.ElementType> = {
   region: MapPin,
   industry: ShoppingBag,
-  limit: Ban,
   period: Clock,
 };
-
-function TypeBadge({ type }: { type: string }) {
-  return (
-    <span
-      className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded"
-      style={{
-        background: TYPE_BG[type],
-        color: TYPE_COLORS[type],
-      }}
-    >
-      {TYPE_LABELS[type]}
-    </span>
-  );
-}
 
 const TOOLTIP_STYLE = {
   contentStyle: {
@@ -81,17 +63,30 @@ const TOOLTIP_STYLE = {
   labelStyle: { color: "#fff", fontWeight: 600 as const },
 };
 
+function TypeBadge({ type }: { type: string }) {
+  return (
+    <span
+      className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded"
+      style={{ background: TYPE_BG[type], color: TYPE_COLORS[type] }}
+    >
+      {TYPE_LABELS[type]}
+    </span>
+  );
+}
+
 export default function BlockLogView() {
   const [filterType, setFilterType] = useState<string>("all");
+  const [filterCard, setFilterCard] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const filtered = blockLogs.filter((log) => {
     if (filterType !== "all" && log.violationType !== filterType) return false;
+    if (filterCard !== "all" && log.cardCompany !== filterCard) return false;
     if (
       searchQuery &&
       !log.intentId.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      !log.merchantName.includes(searchQuery)
+      !log.industry.includes(searchQuery)
     )
       return false;
     return true;
@@ -105,8 +100,8 @@ export default function BlockLogView() {
 
   return (
     <div className="space-y-6">
-      {/* Summary Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Violation Type Summary Cards */}
+      <div className="grid grid-cols-3 gap-4">
         {blockSummary.map((s) => {
           const Icon = TYPE_ICONS[s.code];
           const isSelected = filterType === s.code;
@@ -126,16 +121,10 @@ export default function BlockLogView() {
                 setFilterType(filterType === s.code ? "all" : s.code)
               }
             >
-              <div
-                className="h-[3px]"
-                style={{ background: TYPE_COLORS[s.code] }}
-              />
+              <div className="h-[3px]" style={{ background: TYPE_COLORS[s.code] }} />
               <div className="p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Icon
-                    className="w-4 h-4"
-                    style={{ color: TYPE_COLORS[s.code] }}
-                  />
+                  <Icon className="w-4 h-4" style={{ color: TYPE_COLORS[s.code] }} />
                   <span className="text-xs font-medium" style={{ color: "#475569" }}>
                     {s.type}
                   </span>
@@ -156,6 +145,57 @@ export default function BlockLogView() {
         })}
       </div>
 
+      {/* Card Company Filter */}
+      <div
+        className="bg-white rounded-lg p-4"
+        style={{
+          border: "1px solid #eae7e0",
+          boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+        }}
+      >
+        <span className="text-xs font-medium mr-3" style={{ color: "#475569" }}>
+          카드사 필터
+        </span>
+        <div className="inline-flex flex-wrap gap-2 mt-2">
+          <button
+            onClick={() => setFilterCard("all")}
+            className="px-3 py-1 text-xs rounded-full font-medium transition-all cursor-pointer"
+            style={{
+              background: filterCard === "all" ? "#1b2844" : "#f5f3ef",
+              color: filterCard === "all" ? "#fff" : "#475569",
+              border: filterCard === "all" ? "1px solid #1b2844" : "1px solid #ddd9d0",
+            }}
+          >
+            전체
+          </button>
+          {blockByCardCompany.map((c) => {
+            const isSelected = filterCard === c.company;
+            return (
+              <button
+                key={c.company}
+                onClick={() =>
+                  setFilterCard(isSelected ? "all" : c.company)
+                }
+                className="px-3 py-1 text-xs rounded-full font-medium transition-all cursor-pointer"
+                style={{
+                  background: isSelected ? "#1b2844" : "#f5f3ef",
+                  color: isSelected ? "#fff" : "#475569",
+                  border: isSelected ? "1px solid #1b2844" : "1px solid #ddd9d0",
+                }}
+              >
+                {c.company}
+                <span
+                  className="ml-1 font-mono"
+                  style={{ color: isSelected ? "rgba(255,255,255,0.6)" : "#94a3b8" }}
+                >
+                  {c.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pie Chart */}
         <div
@@ -165,10 +205,7 @@ export default function BlockLogView() {
             boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
           }}
         >
-          <h3
-            className="text-[13px] font-semibold mb-4"
-            style={{ color: "#475569" }}
-          >
+          <h3 className="text-[13px] font-semibold mb-4" style={{ color: "#475569" }}>
             위반 유형 분포
           </h3>
           <ResponsiveContainer width="100%" height={250}>
@@ -184,10 +221,7 @@ export default function BlockLogView() {
                 labelLine={false}
               >
                 {pieData.map((entry) => (
-                  <Cell
-                    key={entry.code}
-                    fill={TYPE_COLORS[entry.code]}
-                  />
+                  <Cell key={entry.code} fill={TYPE_COLORS[entry.code]} />
                 ))}
               </Pie>
               <Tooltip {...TOOLTIP_STYLE} />
@@ -211,7 +245,7 @@ export default function BlockLogView() {
               <ShieldAlert className="w-4 h-4" style={{ color: "#9e3328" }} />
               차단 로그 상세
             </h3>
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto">
               <div className="relative">
                 <Search
                   className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2"
@@ -219,7 +253,7 @@ export default function BlockLogView() {
                 />
                 <input
                   type="text"
-                  placeholder="intentId / 가맹점 검색"
+                  placeholder="intentId / 업종 검색"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-8 pr-3 py-1.5 text-xs rounded-md focus:outline-none"
@@ -229,36 +263,18 @@ export default function BlockLogView() {
                   }}
                 />
               </div>
-              <select
-                value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
-                className="text-xs rounded-md px-2 py-1.5 focus:outline-none"
-                style={{
-                  border: "1px solid #ddd9d0",
-                  background: "#faf9f6",
-                  color: "#475569",
-                }}
-              >
-                <option value="all">전체 유형</option>
-                <option value="region">지역 위반</option>
-                <option value="industry">업종 위반</option>
-                <option value="limit">한도 초과</option>
-                <option value="period">기간 위반</option>
-              </select>
             </div>
           </div>
 
           <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
             <table className="w-full text-xs">
               <thead className="sticky top-0 bg-white">
-                <tr
-                  className="text-left"
-                  style={{ borderBottom: "2px solid #1b2844" }}
-                >
+                <tr className="text-left" style={{ borderBottom: "2px solid #1b2844" }}>
                   <th className="py-2 pr-3 font-semibold" style={{ color: "#475569" }}>시각</th>
                   <th className="py-2 pr-3 font-semibold" style={{ color: "#475569" }}>intentId</th>
                   <th className="py-2 pr-3 font-semibold" style={{ color: "#475569" }}>유형</th>
-                  <th className="py-2 pr-3 font-semibold" style={{ color: "#475569" }}>가맹점</th>
+                  <th className="py-2 pr-3 font-semibold" style={{ color: "#475569" }}>업종</th>
+                  <th className="py-2 pr-3 font-semibold" style={{ color: "#475569" }}>카드사</th>
                   <th className="py-2 pr-3 font-semibold text-right" style={{ color: "#475569" }}>금액</th>
                   <th className="py-2 w-8"></th>
                 </tr>
@@ -277,11 +293,7 @@ export default function BlockLogView() {
                 ))}
                 {filtered.length === 0 && (
                   <tr>
-                    <td
-                      colSpan={6}
-                      className="py-8 text-center"
-                      style={{ color: "#94a3b8" }}
-                    >
+                    <td colSpan={7} className="py-8 text-center" style={{ color: "#94a3b8" }}>
                       검색 결과 없음
                     </td>
                   </tr>
@@ -331,7 +343,8 @@ function LogRow({
         <td className="py-2 pr-3">
           <TypeBadge type={log.violationType} />
         </td>
-        <td className="py-2 pr-3">{log.merchantName}</td>
+        <td className="py-2 pr-3">{log.industry}</td>
+        <td className="py-2 pr-3" style={{ color: "#475569" }}>{log.cardCompany}</td>
         <td className="py-2 pr-3 text-right font-mono">
           {formatKRW(log.amount)}
         </td>
@@ -345,15 +358,11 @@ function LogRow({
       </tr>
       {expanded && (
         <tr style={{ borderBottom: "1px solid #eae7e0" }}>
-          <td colSpan={6} className="p-4" style={{ background: "#faf9f6" }}>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+          <td colSpan={7} className="p-4" style={{ background: "#faf9f6" }}>
+            <div className="grid grid-cols-3 gap-4 text-xs">
               <div>
                 <span style={{ color: "#94a3b8" }}>사유 코드</span>
                 <p className="font-mono font-medium mt-0.5">{log.reasonCode}</p>
-              </div>
-              <div>
-                <span style={{ color: "#94a3b8" }}>정책 버전</span>
-                <p className="font-medium mt-0.5">{log.policyVersion}</p>
               </div>
               <div>
                 <span style={{ color: "#94a3b8" }}>지역</span>
@@ -362,14 +371,6 @@ function LogRow({
               <div>
                 <span style={{ color: "#94a3b8" }}>MCC</span>
                 <p className="font-mono font-medium mt-0.5">{log.mcc}</p>
-              </div>
-              <div>
-                <span style={{ color: "#94a3b8" }}>가맹점 ID</span>
-                <p className="font-mono font-medium mt-0.5">{log.merchantId}</p>
-              </div>
-              <div>
-                <span style={{ color: "#94a3b8" }}>고객 ID</span>
-                <p className="font-mono font-medium mt-0.5">{log.customerId}</p>
               </div>
             </div>
           </td>
