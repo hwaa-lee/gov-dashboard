@@ -1,18 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { BarChart3, MapPin, CreditCard, ShieldAlert, Shield } from "lucide-react";
+import { BarChart3, MapPin, CreditCard, Shield } from "lucide-react";
 import PolicyExecution from "@/components/PolicyExecution";
 import RegionView from "@/components/RegionView";
 import CardCompanyView from "@/components/CardCompanyView";
-import BlockLogView from "@/components/BlockLogView";
 import { regionData, cardCompanyData } from "@/lib/mock-data";
 
 const mainTabs = [
   { id: "overview", label: "전체 현황", icon: BarChart3 },
   { id: "region", label: "지역별", icon: MapPin },
   { id: "card", label: "카드사별", icon: CreditCard },
-  { id: "blocklog", label: "차단 로그", icon: ShieldAlert },
 ] as const;
 
 type MainTab = (typeof mainTabs)[number]["id"];
@@ -135,7 +133,6 @@ export default function DashboardPage() {
         {activeTab === "overview" && <PolicyExecution />}
         {activeTab === "region" && <RegionView region={selectedRegion} />}
         {activeTab === "card" && <CardCompanyView company={selectedCard} />}
-        {activeTab === "blocklog" && <BlockLogView />}
       </main>
 
       {/* Footer */}
