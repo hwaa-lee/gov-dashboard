@@ -26,7 +26,7 @@ export default function DashboardPage() {
       />
 
       {/* Header */}
-      <header style={{ background: "var(--navy)" }}>
+      <header className="sticky top-0 z-50" style={{ background: "var(--navy)" }}>
         <div className="max-w-[1440px] mx-auto px-8 py-6 flex items-center gap-5">
           <div
             className="flex items-center justify-center w-9 h-9 rounded-lg shrink-0"

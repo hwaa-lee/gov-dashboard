@@ -71,12 +71,12 @@ function StatCard({ icon: Icon, label, value, sub, accent = "#1a6b5a", delay = 0
     <div className="card animate-in" style={{ animationDelay: `${delay}s` }}>
       <div className="p-5">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: `${accent}10` }}>
-            <Icon className="w-[14px] h-[14px]" style={{ color: accent }} />
+          <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: `${accent}10` }}>
+            <Icon className="w-5 h-5" style={{ color: accent }} />
           </div>
           <span className="text-[11px] font-semibold tracking-wide uppercase" style={{ color: "#8a919e" }}>{label}</span>
         </div>
-        <p className="text-[26px] font-bold leading-none" style={{ fontFamily: "var(--font-mono)", color: "#1a1d24" }}>{value}</p>
+        <p className="text-[28px] font-bold leading-none tracking-tight" style={{ fontFamily: "var(--font-mono)", color: "#1a1d24" }}>{value}</p>
         {sub && <p className="text-[11px] mt-2" style={{ color: "#8a919e" }}>{sub}</p>}
       </div>
     </div>
@@ -84,7 +84,7 @@ function StatCard({ icon: Icon, label, value, sub, accent = "#1a6b5a", delay = 0
 }
 
 function Section({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
-  return <div className={`card p-6 animate-in ${className}`} style={{ animationDelay: `${delay}s` }}>{children}</div>;
+  return <div className={`card p-5 md:p-6 animate-in ${className}`} style={{ animationDelay: `${delay}s` }}>{children}</div>;
 }
 
 function Title({ children }: { children: React.ReactNode }) {

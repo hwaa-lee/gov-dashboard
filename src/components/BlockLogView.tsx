@@ -116,16 +116,16 @@ export default function BlockLogView() {
               <div className="p-5">
                 <div className="flex items-center gap-2 mb-3">
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    className="w-11 h-11 rounded-xl flex items-center justify-center"
                     style={{ background: `${TYPE_COLORS[s.code]}0c` }}
                   >
-                    <Icon className="w-[14px] h-[14px]" style={{ color: TYPE_COLORS[s.code] }} />
+                    <Icon className="w-5 h-5" style={{ color: TYPE_COLORS[s.code] }} />
                   </div>
                   <span className="text-[11px] font-semibold tracking-wide uppercase" style={{ color: "#8a919e" }}>
                     {s.type}
                   </span>
                 </div>
-                <p className="text-[26px] font-bold leading-none" style={{ fontFamily: "var(--font-mono)", color: "#1a1d24" }}>
+                <p className="text-[28px] font-bold leading-none tracking-tight" style={{ fontFamily: "var(--font-mono)", color: "#1a1d24" }}>
                   {s.count}
                   <span className="text-sm font-normal ml-0.5" style={{ color: "#b4b9c4" }}>건</span>
                 </p>
@@ -178,7 +178,7 @@ export default function BlockLogView() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Pie Chart */}
-        <div className="card p-6 animate-in stagger-5">
+        <div className="card p-4 md:p-5 md:p-6 animate-in stagger-5">
           <h3 className="text-[13px] font-semibold mb-5" style={{ color: "#4a5568" }}>
             위반 유형 분포
           </h3>
@@ -204,7 +204,7 @@ export default function BlockLogView() {
         </div>
 
         {/* Log Table */}
-        <div className="lg:col-span-2 card p-6 animate-in stagger-6">
+        <div className="lg:col-span-2 card p-4 md:p-5 md:p-6 animate-in stagger-6">
           <div className="flex items-center gap-3 mb-5">
             <h3 className="text-[13px] font-semibold flex items-center gap-1.5" style={{ color: "#4a5568" }}>
               <ShieldAlert className="w-4 h-4" style={{ color: "#9e3328" }} />
