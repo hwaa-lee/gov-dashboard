@@ -52,14 +52,14 @@ export default function CardCompanyView({ company: name }: { company: string }) 
         <Title>지역별 신청·집행 현황</Title>
         <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={regionGrouped} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
-              <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
-              <YAxis type="category" dataKey="name" width={45} tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+            <BarChart data={regionGrouped}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+              <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+              <YAxis tickFormatter={(v) => formatKRW(v)} {...AX} axisLine={false} width={65} />
               <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
               <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} />
-              <Bar dataKey="신청액" fill={BRAND_LIGHT} radius={[0, 4, 4, 0]} />
-              <Bar dataKey="집행액" fill={BRAND} radius={[0, 4, 4, 0]} />
+              <Bar dataKey="신청액" fill={BRAND_LIGHT} radius={[4, 4, 0, 0]} />
+              <Bar dataKey="집행액" fill={BRAND} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

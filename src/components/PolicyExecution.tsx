@@ -80,29 +80,29 @@ export default function PolicyExecution() {
           <Title>카드사별 신청·집행</Title>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={cardGrouped} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
-                <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
-                <YAxis type="category" dataKey="name" width={55} tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+              <BarChart data={cardGrouped}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={(v) => formatKRW(v)} {...AX} axisLine={false} width={65} />
                 <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
                 <Legend wrapperStyle={{ fontSize: "12px", paddingTop: "12px" }} />
-                <Bar dataKey="신청액" fill={BRAND_LIGHT} radius={[0, 4, 4, 0]} />
-                <Bar dataKey="집행액" fill={BRAND} radius={[0, 4, 4, 0]} />
+                <Bar dataKey="신청액" fill={BRAND_LIGHT} radius={[4, 4, 0, 0]} />
+                <Bar dataKey="집행액" fill={BRAND} radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </Section>
 
         <Section delay={0.18}>
-          <Title>업종별 사용 현황</Title>
+          <Title>업종별 사용 현황 (상위)</Title>
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={industryData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f1f5f9" />
-                <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
-                <YAxis type="category" dataKey="industry" width={80} tick={{ fontSize: 12, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+              <BarChart data={industryData.slice(0, 10)}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="industry" tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
+                <YAxis tickFormatter={(v) => formatKRW(v)} {...AX} axisLine={false} width={65} />
                 <Tooltip {...TT} formatter={(v) => formatKRW(Number(v))} />
-                <Bar dataKey="amount" name="집행액" fill={BRAND} radius={[0, 4, 4, 0]} />
+                <Bar dataKey="amount" name="집행액" fill={BRAND} radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
