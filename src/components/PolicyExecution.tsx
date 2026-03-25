@@ -1,6 +1,6 @@
 "use client";
 
-import { Wallet, TrendingUp, ShoppingBag, FileText, Zap, Landmark } from "lucide-react";
+import { Wallet, TrendingUp, ShoppingBag, FileText, Zap, Landmark, BarChart3 } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, AreaChart, Area, Legend,
@@ -10,7 +10,7 @@ import {
   settlementSummary, blockSummary, formatKRW, formatNumber,
 } from "@/lib/mock-data";
 import { renderPieLabel } from "./PieLabel";
-import { PIE_COLORS, BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, ProgressBar, DataTable, TR, TD } from "./shared";
+import { PIE_COLORS, BRAND, BRAND_LIGHT, TT, AX, StatCard, Section, Title, DataTable, TR, TD } from "./shared";
 import DateFilter from "./DateFilter";
 import BlockedRefundSection from "./BlockedRefundSection";
 import RecentBlockLogs from "./RecentBlockLogs";
@@ -35,14 +35,13 @@ export default function PolicyExecution() {
     <div className="space-y-6">
       <DateFilter />
 
-      {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatCard icon={Wallet} label="총 예산" value={formatKRW(policyBudget.totalBudget)} sub={policyBudget.period} delay={0.02} />
-        <StatCard icon={FileText} label="신청액" value={formatKRW(policyBudget.appliedAmount)} sub={`총예산 대비 ${((policyBudget.appliedAmount / policyBudget.totalBudget) * 100).toFixed(1)}%`} delay={0.05} />
-        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(policyBudget.totalSpent)} sub={`집행률 ${policyBudget.executionRate}%`} accent="#1a6b5a" delay={0.08} />
+      {/* Stats - 4 col grid like TailPanel */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <StatCard icon={Wallet} label="총 예산" value={formatKRW(policyBudget.totalBudget)} sub={policyBudget.period} accent="#2d5f8a" delay={0.02} />
+        <StatCard icon={FileText} label="신청액" value={formatKRW(policyBudget.appliedAmount)} sub={`총예산 대비 ${((policyBudget.appliedAmount / policyBudget.totalBudget) * 100).toFixed(1)}%`} accent="#6b4c7a" delay={0.04} />
+        <StatCard icon={TrendingUp} label="집행액" value={formatKRW(policyBudget.totalSpent)} sub={`집행률 ${policyBudget.executionRate}%`} accent="#1a6b5a" delay={0.06} />
+        <StatCard icon={BarChart3} label="집행률" value={`${policyBudget.executionRate}%`} sub={`${formatKRW(policyBudget.totalSpent)} / ${formatKRW(policyBudget.totalBudget)}`} accent="#8b6d3f" delay={0.08} />
       </div>
-
-      <ProgressBar label="예산 대비 집행률" spent={policyBudget.totalSpent} total={policyBudget.totalBudget} delay={0.10} />
 
       {/* Distribution */}
       <div className="grid gap-6 lg:grid-cols-2">

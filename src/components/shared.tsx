@@ -31,27 +31,27 @@ export const AX = {
   tickLine: false as const,
 };
 
-/* PrimeX Stat Card: icon top-right, number prominent */
-export function StatCard({ icon: Icon, label, value, sub, accent, delay = 0 }: {
+/* TailPanel Stat Card: icon right in colored circle */
+export function StatCard({ icon: Icon, label, value, sub, accent = "#2d5f8a", delay = 0 }: {
   icon: React.ElementType; label: string; value: string; sub?: string; accent?: string; delay?: number;
 }) {
   return (
     <div className="card animate-in" style={{ animationDelay: `${delay}s` }}>
-      <div className="p-5">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-500">{label}</span>
-          <Icon className="h-5 w-5 text-gray-400" />
+      <div className="p-5 flex items-start justify-between">
+        <div>
+          <p className="text-sm text-gray-500">{label}</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900" style={{ fontFamily: "var(--font-mono)" }}>{value}</p>
+          {sub && <p className="mt-1 text-xs text-gray-400">{sub}</p>}
         </div>
-        <p className="mt-2 text-2xl font-bold text-gray-900" style={{ fontFamily: "var(--font-mono)" }}>{value}</p>
-        {sub && (
-          <p className="mt-1 text-sm" style={{ color: accent || "#6b7280" }}>{sub}</p>
-        )}
+        <div className="h-11 w-11 rounded-full flex items-center justify-center shrink-0" style={{ background: `${accent}15` }}>
+          <Icon className="h-5 w-5" style={{ color: accent }} />
+        </div>
       </div>
     </div>
   );
 }
 
-/* PrimeX Section Card */
+/* Section Card */
 export function Section({ children, className = "", delay = 0 }: {
   children: React.ReactNode; className?: string; delay?: number;
 }) {
