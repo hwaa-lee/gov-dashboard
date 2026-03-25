@@ -92,8 +92,8 @@ body {
 
 /* ─── Table ─── */
 .table-header th {
-  padding: 12px 16px 12px 0;
-  font-size: 12px;
+  padding: 8px 12px 8px 0;
+  font-size: 11px;
   font-weight: 500;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border);
@@ -101,9 +101,9 @@ body {
 .table-header th:last-child { padding-right: 0; }
 
 .table-row td {
-  padding: 12px 16px 12px 0;
+  padding: 7px 12px 7px 0;
   border-bottom: 1px solid var(--border-light);
-  font-size: 14px;
+  font-size: 13px;
 }
 .table-row td:last-child { padding-right: 0; }
 .table-row:last-child td { border-bottom: none; }

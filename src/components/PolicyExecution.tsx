@@ -34,7 +34,7 @@ export default function PolicyExecution() {
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* ① 기간 필터 */}
       <DateFilter />
 
@@ -47,10 +47,10 @@ export default function PolicyExecution() {
       <ProgressBar label="예산 대비 집행률" spent={policyBudget.totalSpent} total={policyBudget.totalBudget} delay={0.12} />
 
       {/* ③ 분포 현황 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Section delay={0.14}>
           <Title>지역별 집행 분포</Title>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={160}>
             <PieChart>
               <Pie data={regionPie} cx="50%" cy="50%" outerRadius={105} innerRadius={40} dataKey="value" label={renderPieLabel} labelLine={false}>
                 {regionPie.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
@@ -61,7 +61,7 @@ export default function PolicyExecution() {
         </Section>
         <Section delay={0.16}>
           <Title>카드사별 집행 분포</Title>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={160}>
             <PieChart>
               <Pie data={cardPie} cx="50%" cy="50%" outerRadius={105} innerRadius={40} dataKey="value" label={renderPieLabel} labelLine={false}>
                 {cardPie.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
@@ -73,10 +73,10 @@ export default function PolicyExecution() {
       </div>
 
       {/* ④ 교차 분석 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Section delay={0.18}>
           <Title>카드사별 신청·집행</Title>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={160}>
             <BarChart data={cardGrouped} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
               <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
@@ -90,7 +90,7 @@ export default function PolicyExecution() {
         </Section>
         <Section delay={0.20}>
           <Title>업종별 사용 현황</Title>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={160}>
             <BarChart data={industryData} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
               <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
@@ -105,7 +105,7 @@ export default function PolicyExecution() {
       {/* ⑤ 추이 */}
       <Section delay={0.22}>
         <Title>집행 금액 추이</Title>
-        <ResponsiveContainer width="100%" height={240}>
+        <ResponsiveContainer width="100%" height={160}>
           <AreaChart data={trend}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0ede8" />
             <XAxis dataKey="week" {...AX} />
@@ -131,10 +131,10 @@ export default function PolicyExecution() {
           <Zap className="w-4 h-4" style={{ color: "var(--gold)" }} />
           <h3 className="text-[13px] font-semibold text-white">정산 현황 SC / KRW</h3>
         </div>
-        <div className="p-5 md:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="p-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div>
-              <ResponsiveContainer width="100%" height={220}>
+              <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
                   <Pie data={[{ name: "SC", value: settlementSummary.scAmount }, { name: "KRW", value: settlementSummary.krwAmount }]} cx="50%" cy="50%" innerRadius={55} outerRadius={90} dataKey="value" label={renderPieLabel} labelLine={false}>
                     <Cell fill={SC} /><Cell fill={KRW} />
@@ -164,7 +164,7 @@ export default function PolicyExecution() {
       </div>
 
       {/* ⑧ 상세 테이블 */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Section delay={0.28}>
           <Title>지역별 상세</Title>
           <DataTable headers={["지역", "집행액", "비중", "건수"]}>

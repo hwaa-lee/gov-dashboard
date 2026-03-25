@@ -41,7 +41,7 @@ export default function CardCompanyView({ company: name }: { company: string }) 
   const refundAmount = Math.round(policyBudget.refundAmount * scale);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <DateFilter />
 
       {/* ① 핵심 수치 */}
@@ -55,7 +55,7 @@ export default function CardCompanyView({ company: name }: { company: string }) 
       {/* ② 교차 분석: 지역별 신청·집행 */}
       <Section delay={0.14}>
         <Title>지역별 신청·집행 현황</Title>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={240}>
           <BarChart data={regionGrouped} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#f0ede8" />
             <XAxis type="number" tickFormatter={(v) => formatKRW(v)} {...AX} />
@@ -71,7 +71,7 @@ export default function CardCompanyView({ company: name }: { company: string }) 
       {/* ③ 추이 */}
       <Section delay={0.16}>
         <Title>주간 집행 추이</Title>
-        <ResponsiveContainer width="100%" height={220}>
+        <ResponsiveContainer width="100%" height={180}>
           <AreaChart data={weekly}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0ede8" />
             <XAxis dataKey="week" {...AX} />
