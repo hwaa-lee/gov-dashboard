@@ -15,23 +15,23 @@ export default function BlockedRefundSection({
       <Title>차단·환불 현황</Title>
 
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="rounded-xl bg-red-50 p-4">
-          <p className="text-xs font-medium text-red-600 mb-1">차단 건수</p>
+        <div className="rounded-xl p-4" style={{ background: "#faf0ee" }}>
+          <p className="text-xs font-medium mb-1" style={{ color: "#9e3328" }}>차단 건수</p>
           <p className="text-lg font-bold font-mono text-gray-900">{formatNumber(blockedCount)}건</p>
         </div>
-        <div className="rounded-xl bg-red-50 p-4">
-          <p className="text-xs font-medium text-red-600 mb-1">차단 금액</p>
+        <div className="rounded-xl p-4" style={{ background: "#faf0ee" }}>
+          <p className="text-xs font-medium mb-1" style={{ color: "#9e3328" }}>차단 금액</p>
           <p className="text-lg font-bold font-mono text-gray-900">{formatKRW(blockedAmount)}</p>
         </div>
-        <div className="rounded-xl bg-orange-50 p-4">
-          <p className="text-xs font-medium text-orange-600 mb-1">환불 금액</p>
+        <div className="rounded-xl p-4" style={{ background: "#faf3ec" }}>
+          <p className="text-xs font-medium mb-1" style={{ color: "#b06828" }}>환불 금액</p>
           <p className="text-lg font-bold font-mono text-gray-900">{formatKRW(refundAmount)}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div>
-          <p className="text-sm font-medium text-gray-700 mb-3">차단 추이</p>
+          <p className="text-sm font-medium mb-3" style={{ color: "#6b7280" }}>차단 추이</p>
           <div className="h-44">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weeklyData}>
@@ -45,7 +45,7 @@ export default function BlockedRefundSection({
           </div>
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-700 mb-3">환불 추이</p>
+          <p className="text-sm font-medium mb-3" style={{ color: "#6b7280" }}>환불 추이</p>
           <div className="h-44">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weeklyData}>
